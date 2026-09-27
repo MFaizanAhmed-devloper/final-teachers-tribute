@@ -1,0 +1,67 @@
+{
+  "version": "8",
+  "dialect": "postgres",
+  "id": "e5570756-13fd-478e-b24c-7d4f9b46a36e",
+  "prevIds": [
+    "00000000-0000-0000-0000-000000000000"
+  ],
+  "ddl": [
+    {
+      "isRlsEnabled": false,
+      "name": "teacher_likes",
+      "entityType": "tables",
+      "schema": "public"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "teacher_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "teacher_likes"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "voter_id",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "teacher_likes"
+    },
+    {
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "teacher_likes"
+    },
+    {
+      "columns": [
+        "teacher_id",
+        "voter_id"
+      ],
+      "nameExplicit": false,
+      "name": "teacher_likes_pkey",
+      "entityType": "pks",
+      "schema": "public",
+      "table": "teacher_likes"
+    }
+  ],
+  "renames": []
+}

@@ -7,6 +7,11 @@
   NODE_VERSION = "20"
 
 [[redirects]]
+  from = "/api/likes"
+  to = "/.netlify/functions/likes"
+  status = 200
+
+[[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/notes/:splat"
   status = 200
