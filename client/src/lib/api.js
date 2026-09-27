@@ -1,5 +1,22 @@
 const BASE = '/api';
 
+export async function fetchLikes(voterId) {
+  const res = await fetch(`${BASE}/likes?voterId=${encodeURIComponent(voterId)}`);
+  if (!res.ok) throw new Error('Could not load likes.');
+  return res.json();
+}
+
+export async function setTeacherLike(teacherId, voterId, liked) {
+  const res = await fetch(`${BASE}/likes`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ teacherId, voterId, liked })
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Could not update like.');
+  return data;
+}
+
 export async function fetchNotes() {
   try {
     const res = await fetch(`${BASE}/notes`);

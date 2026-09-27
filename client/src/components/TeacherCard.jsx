@@ -4,16 +4,17 @@ import { useLikes } from '../context/LikesContext.jsx';
 import { showToast } from './Toast.jsx';
 
 export default function TeacherCard({ teacher, index }) {
-  const { has, toggle } = useLikes();
+  const { has, counts, pending, toggle } = useLikes();
   const hasTributeHeart = teacher.id === 'miss-saima' || teacher.id === 'miss-samina';
   const liked = has(teacher.id);
-  const likes = teacher.likes + (liked ? 1 : 0);
+  const likes = counts[teacher.id] ?? teacher.likes;
 
   const handleLike = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    toggle(teacher.id);
-    showToast(liked ? 'Appreciation removed.' : `You appreciated ${teacher.name} 💛`);
+    toggle(teacher.id)
+      .then(() => showToast(liked ? 'Appreciation removed.' : `You appreciated ${teacher.name} 💛`))
+      .catch(() => showToast('Could not save your appreciation. Please try again.'));
   };
 
   const onMove = (e) => {
@@ -50,6 +51,7 @@ export default function TeacherCard({ teacher, index }) {
           aria-pressed={liked}
           aria-label={`Appreciate ${teacher.name}`}
           onClick={handleLike}
+          disabled={pending.has(teacher.id)}
         >
           <span className="heart-icon" aria-hidden="true">♥</span>
           <span>{likes}</span>

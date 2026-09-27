@@ -12,7 +12,7 @@ export default function TeacherTribute() {
   const navigate = useNavigate();
   const teacher = getTeacherById(id);
   const { prev, next } = useMemo(() => getAdjacentTeachers(id), [id]);
-  const { has, toggle } = useLikes();
+  const { has, counts, pending, toggle } = useLikes();
 
   useEffect(() => {
     if (!teacher) navigate('/404', { replace: true });
@@ -27,11 +27,12 @@ export default function TeacherTribute() {
   const idx = teacher.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
   const [a, b, c] = teacher.accent || ['rgba(242,193,78,.14)', 'rgba(123,108,255,.10)', 'rgba(63,208,201,.10)'];
   const liked = has(teacher.id);
-  const likes = teacher.likes + (liked ? 1 : 0);
+  const likes = counts[teacher.id] ?? teacher.likes;
 
   const onLike = () => {
-    toggle(teacher.id);
-    showToast(liked ? 'Appreciation removed.' : `You appreciated ${teacher.name} 💛`);
+    toggle(teacher.id)
+      .then(() => showToast(liked ? 'Appreciation removed.' : `You appreciated ${teacher.name} 💛`))
+      .catch(() => showToast('Could not save your appreciation. Please try again.'));
   };
 
   return (
@@ -105,6 +106,7 @@ export default function TeacherTribute() {
               className={`btn ${liked ? 'btn-ghost' : 'btn-primary'}`}
               onClick={onLike}
               aria-pressed={liked}
+              disabled={pending.has(teacher.id)}
             >
               <span aria-hidden="true">♥</span>
               {liked ? 'Appreciated' : 'Appreciate'} · {likes}
